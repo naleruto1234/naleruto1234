@@ -8,9 +8,8 @@ pipeline {
     }
 
     stage('Docker Build') {
-      agent { dockerfile true }
       steps {
-        echo 'Build.'
+        sh 'docker build -t naleruto/nale-jenkins:latest .'
       }
     }
 
