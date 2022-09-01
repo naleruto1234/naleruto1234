@@ -92,3 +92,23 @@ pipeline {
 
   }
 }
+
+
+
+// ACCESS TOKEN DESCRIPTION
+// Cw2018develop
+// ACCESS PERMISSIONS
+// Read, Write, Delete
+// To use the access token from your Docker CLI client:
+
+// 1. Run docker login -u naleruto
+
+// 2. At the password prompt, enter the personal access token.
+
+// dckr_pat_g5RpHsBGVn8EmV5G-cU-WrGG9
+
+
+
+// DockerHub Account
+// naleruto
+// 0649639461
