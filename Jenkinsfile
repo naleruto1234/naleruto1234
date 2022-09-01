@@ -7,13 +7,6 @@ pipeline {
       }
     }
 
-    stage('Docker Build') {
-      agent { dockerfile true }
-      steps {
-        sh 'docker build -t naleruto/nale-jenkins:latest .'
-      }
-    }
-
     stage('Release') {
       steps {
         echo 'Ready to release etc.'
