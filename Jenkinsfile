@@ -1,79 +1,88 @@
-node('php') {
-
-    stage('Get code from SCM') {
-        checkout(
-                [$class: 'GitSCM', branches: [[name: '*/#your-dev-branch#']],
-                 doGenerateSubmoduleConfigurations: false,
-                 extensions: [],
-                 submoduleCfg: [],
-                 userRemoteConfigs: [[url: '#your-git-link#']]]
-        )
+pipeline {
+  agent any
+  stages {
+    stage('Checkout') {
+      steps {
+        git(url: 'https://github.com/naleruto1234/naleruto1234.git', branch: 'master')
+      }
     }
 
-    stage('Composer Install') {
-        sh 'composer install'
+    stage('Test') {
+      parallel {
+        stage('PHP 5.6') {
+          agent {
+            docker {
+              image 'allebb/phptestrunner-56:latest'
+              args '-u root:sudo'
+            }
+
+          }
+          steps {
+            echo 'Running PHP 5.6 tests...'
+            sh 'php -v'
+            echo 'Installing Composer'
+            sh 'curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer'
+            echo 'Installing project composer dependencies...'
+            sh 'cd $WORKSPACE && composer install --no-progress'            
+            echo 'Running PHPUnit tests...'
+            sh 'php $WORKSPACE/vendor/bin/phpunit --coverage-html $WORKSPACE/report/clover --coverage-clover $WORKSPACE/report/clover.xml --log-junit $WORKSPACE/report/junit.xml'
+            sh 'chmod -R a+w $PWD && chmod -R a+w $WORKSPACE'
+            junit 'report/*.xml'
+          }
+        }
+
+        stage('PHP 7.3') {
+          agent {
+            docker {
+              image 'allebb/phptestrunner-73:latest'
+              args '-u root:sudo'
+            }
+
+          }
+          steps {
+            echo 'Running PHP 7.3 tests...'
+            sh 'php -v'
+            echo 'Installing Composer'
+            sh 'curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer'
+            echo 'Installing project composer dependencies...'
+            sh 'cd $WORKSPACE && composer install --no-progress'
+            echo 'Running PHPUnit tests...'
+            sh 'php $WORKSPACE/vendor/bin/phpunit --coverage-html $WORKSPACE/report/clover --coverage-clover $WORKSPACE/report/clover.xml --log-junit $WORKSPACE/report/junit.xml'
+            sh 'chmod -R a+w $PWD && chmod -R a+w $WORKSPACE'
+            junit 'report/*.xml'
+          }
+        }
+
+        stage('PHP 7.4') {
+          agent {
+            docker {
+              image 'allebb/phptestrunner-74:latest'
+              args '-u root:sudo'
+            }
+
+          }
+          steps {
+            echo 'Running PHP 7.4 tests...'
+            sh 'php -v'
+            echo 'Installing Composer'
+            sh 'curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer'
+            echo 'Installing project composer dependencies...'
+            sh 'cd $WORKSPACE && composer install --no-progress'
+            echo 'Running PHPUnit tests...'
+            sh 'php $WORKSPACE/vendor/bin/phpunit --coverage-html $WORKSPACE/report/clover --coverage-clover $WORKSPACE/report/clover.xml --log-junit $WORKSPACE/report/junit.xml'
+            sh 'chmod -R a+w $PWD && chmod -R a+w $WORKSPACE'
+            junit 'report/*.xml'
+          }
+        }
+
+      }
     }
 
-    stage("PHPLint") {
-        sh 'find app -name "*.php" -print0 | xargs -0 -n1 php -l'
+    stage('Release') {
+      steps {
+        echo 'Ready to release etc.'
+      }
     }
 
-    stage("PHPUnit") {
-        sh 'vendor/phpunit/phpunit/phpunit --bootstrap build/bootstrap.php --configuration phpunit-coverage.xml'
-    }
-
-    stage("Publish Coverage") {
-        publishHTML (target: [
-                allowMissing: false,
-                alwaysLinkToLastBuild: false,
-                keepAll: true,
-                reportDir: 'build/coverage',
-                reportFiles: 'index.html',
-                reportName: "Coverage Report"
-
-        ])
-    }
-
-    stage("Publish Clover") {
-        step([$class: 'CloverPublisher', cloverReportDir: 'build/logs', cloverReportFileName: 'clover.xml'])
-    }
-
-    stage('Checkstyle Report') {
-        sh 'vendor/bin/phpcs --report=checkstyle --report-file=build/logs/checkstyle.xml --standard=phpcs.xml --extensions=php,inc --ignore=autoload.php --ignore=vendor/ app || exit 0'
-        checkstyle pattern: 'build/logs/checkstyle.xml'
-    }
-
-    stage('Mess Detection Report') {
-        sh 'vendor/bin/phpmd app xml phpmd.xml --reportfile build/logs/pmd.xml --exclude vendor/ --exclude autoload.php || exit 0'
-        pmd canRunOnFailed: true, pattern: 'build/logs/pmd.xml'
-    }
-
-    stage('CPD Report') {
-        sh 'phpcpd --log-pmd build/logs/pmd-cpd.xml --exclude vendor app || exit 0' /* should be vendor/bin/phpcpd but... conflicts... */
-        dry canRunOnFailed: true, pattern: 'build/logs/pmd-cpd.xml'
-    }
-
-    stage('Lines of Code') {
-        sh 'vendor/bin/phploc --count-tests --exclude vendor/ --log-csv build/logs/phploc.csv --log-xml build/logs/phploc.xml app'
-    }
-
-    stage('Software metrics') {
-        sh 'vendor/bin/pdepend --jdepend-xml=build/logs/jdepend.xml --jdepend-chart=build/pdepend/dependencies.svg --overview-pyramid=build/pdepend/overview-pyramid.svg --ignore=vendor app'
-    }
-
-    stage('Generate documentation') {
-        sh 'vendor/bin/phpdox -f phpdox.xml'
-    }
-    stage('Publish Documentation') {
-        publishHTML (target: [
-                allowMissing: false,
-                alwaysLinkToLastBuild: false,
-                keepAll: true,
-                reportDir: 'build/phpdox/html',
-                reportFiles: 'index.html',
-                reportName: "PHPDox Documentation"
-
-        ])
-    }
-
+  }
 }
