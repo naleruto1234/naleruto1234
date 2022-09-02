@@ -23,12 +23,11 @@ pipeline
             }
         }
 
-        stage('Build')
-        {
-            agent { dockerfile true }
-            steps
-            {
-                echo 'Building...'
+        stage('Build') { 
+            steps { 
+                script{
+                 app = docker.build("naleruto/webserver-ada")
+                }
             }
         }
 
