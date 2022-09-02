@@ -1,5 +1,5 @@
 def githubRepo = 'https://github.com/naleruto1234/naleruto1234.git'
-def githubBranch = 'master'
+def githubBranch = 'branch'
 
 def dockerRepo = 'naleruto/webserver-ada'
 
@@ -12,7 +12,7 @@ pipeline
     }
     stages
     {
-      
+
         stage('Git Clone')
         {
             steps
@@ -22,8 +22,6 @@ pipeline
                     branch: githubBranch
             }
         }
-
-
 
         stage('Build')
         {
