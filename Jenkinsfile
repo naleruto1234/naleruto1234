@@ -1,5 +1,5 @@
 def githubRepo = 'https://github.com/naleruto1234/naleruto1234.git'
-def githubBranch = 'branch'
+def githubBranch = 'master'
 
 def dockerRepo = 'naleruto/webserver-ada'
 
@@ -25,6 +25,7 @@ pipeline
 
         stage('Build')
         {
+            agent { dockerfile true }
             steps
             {
                 echo 'Building...'
