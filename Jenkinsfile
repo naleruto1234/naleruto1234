@@ -1,41 +1,26 @@
-pipeline {
-  agent any
-  stages {
-    stage('Checkout') {
-      steps {
-        git(url: 'https://github.com/naleruto1234/naleruto1234.git', branch: 'master')
-      }
-    }
+def githubRepo = 'https://github.com/naleruto1234/naleruto1234.git'
+def githubBranch = 'master'
 
-    stage('Build Docker Image') {
-      steps {
-        echo 'Build Docker Image.'
-      }
-    }
+def dockerRepo = 'naleruto/webserver-ada'
 
-    stage('Run Docker Image') {
-      steps {
-        echo 'Run Docker Image.'
-      }
+pipeline
+{
+    agent any
+    environment
+    {
+        dockerImage = ''
     }
+    stages
+    {
+        stage('Git Clone')
+        {
+            steps
+            {
+                echo 'Git Clone'
+                git url: githubRepo,
+                    branch: githubBranch
+            }
+        }
 
-    stage('Test Project') {
-      steps {
-        echo 'Test Project.'
-      }
     }
-
-    stage('Deploy') {
-      steps {
-        echo 'Deploy.'
-      }
-    }
-
-    stage('Release') {
-      steps {
-        echo 'Ready to release etc.'
-      }
-    }
-
-  }
 }
