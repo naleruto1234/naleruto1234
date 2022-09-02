@@ -29,7 +29,7 @@ pipeline
                 echo 'Building...'
                 script
                 {
-                    dockerImage = docker.build("naleruto/webserver-ada:${env.BUILD_ID}", "./app/")
+                    dockerImage = docker.build("naleruto/webserver-ada:${env.BUILD_ID}", ".")
                 }
             }
         }
