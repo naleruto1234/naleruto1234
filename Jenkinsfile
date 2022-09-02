@@ -1,8 +1,5 @@
 pipeline {
   agent any
-  environment {
-    dockerhub=credentials('dockerhub')
-  }
   stages {
     stage('Checkout') {
       steps {
@@ -10,9 +7,27 @@ pipeline {
       }
     }
 
-    stage('Docker Build') {
+    stage('Build Docker Image') {
       steps {
-        sh 'docker build -t naleruto/nale-jenkins:latest .'
+        echo 'Build Docker Image.'
+      }
+    }
+
+    stage('Run Docker Image') {
+      steps {
+        echo 'Run Docker Image.'
+      }
+    }
+
+    stage('Test SysTems') {
+      steps {
+        echo 'Test SysTems.'
+      }
+    }
+
+    stage('Deploy') {
+      steps {
+        echo 'Deploy.'
       }
     }
 
