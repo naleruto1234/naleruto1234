@@ -2,6 +2,7 @@ def githubRepo = 'https://github.com/naleruto1234/naleruto1234.git'
 def githubBranch = 'master'
 
 def dockerRepo = 'naleruto/webserver-ada'
+def dockerHome = tool 'myDocker'
 
 pipeline
 {
@@ -22,10 +23,9 @@ pipeline
             }
         }
 
-      stage('Initialize'){
-        def dockerHome = tool 'myDocker'
-        env.PATH = "${dockerHome}/bin:${env.PATH}"
-      }
+        stage('Initialize'){
+          env.PATH = "${dockerHome}/bin:${env.PATH}"
+        }
 
         stage('Build')
         {
