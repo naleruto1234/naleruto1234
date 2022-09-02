@@ -19,9 +19,9 @@ pipeline {
       }
     }
 
-    stage('Test SysTems') {
+    stage('Test Project') {
       steps {
-        echo 'Test SysTems.'
+        echo 'Test Project.'
       }
     }
 
