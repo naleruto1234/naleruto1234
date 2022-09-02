@@ -11,6 +11,11 @@ pipeline
     {
         dockerImage = ''
     }
+    stage('Initialize')
+        {
+          env.PATH = "${dockerHome}/bin:${env.PATH}"
+    }
+
     stages
     {
         stage('Git Clone')
@@ -23,9 +28,7 @@ pipeline
             }
         }
 
-        stage('Initialize'){
-          env.PATH = "${dockerHome}/bin:${env.PATH}"
-        }
+
 
         stage('Build')
         {
