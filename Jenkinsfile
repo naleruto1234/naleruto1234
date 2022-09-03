@@ -23,10 +23,14 @@ pipeline
             }
         }
 
-        stage('Build') { 
-            steps { 
-                script{
-                 app = docker.build("naleruto/webserver-ada")
+        stage('Build')
+        {
+            steps
+            {
+                echo 'Building...'
+                script
+                {
+                    dockerImage = docker.build("naleruto/webserver-ada:${env.BUILD_ID}", ".")
                 }
             }
         }
