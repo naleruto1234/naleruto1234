@@ -30,7 +30,19 @@ pipeline
                 echo 'Building...'
                 script
                 {
-                    dockerImage = docker.build("naleruto/webserver-ada:${env.BUILD_ID}", ".")
+                    dockerImage = docker.build("naleruto-webserver-ada:${env.BUILD_ID}", ".")
+                }
+            }
+        }
+
+        stage('Run') 
+        {
+            steps 
+            {
+                echo 'Run...'
+                script
+                {
+                    dockerImage.run()
                 }
             }
         }
