@@ -20,18 +20,13 @@ pipeline
             steps
             {
                 echo 'Instal Docker..'
-                sh 'cat /etc/os-release'
-                sh 'curl -fsSL "https://download.docker.com/linux/static/stable/x86_64/docker-17.03.1-ce.tgz" \
-                    | tar -xzC /usr/local/bin --strip=1 docker/docker'
+                sh 'docker run --rm --network some-network \
+                        -e DOCKER_TLS_CERTDIR=/certs \
+                        -v some-docker-certs-client:/certs/client:ro \
+                        docker:latest version'
             }
         }
 
-        stage('Start Docker')
-        {
-            steps{
-                sh 'sudo systemctl start docker'
-            }
-        }
 
         stage('Git Clone')
         {
