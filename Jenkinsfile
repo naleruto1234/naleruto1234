@@ -15,11 +15,11 @@ pipeline
     stages
     {
 
-        stage('Instal Docker')
+        stage('Install Docker')
         {
             steps
             {
-                echo 'Instal Docker..'
+                echo 'Install Docker..'
                 sh 'cat /etc/os-release'
                 sh 'apt-get update -qq \
                     && apt-get install -qqy apt-transport-https ca-certificates curl gnupg2 software-properties-common'
@@ -31,6 +31,7 @@ pipeline
                 sh 'apt-get update  -qq \
                     && apt-get install docker-ce'
                 sh 'usermod -aG docker jenkins'
+                sh 'service docker start'
                 // sh 'sudo apt-get update'
                 // sh 'sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin'
                 // sh 'apt-cache madison docker-ce'
