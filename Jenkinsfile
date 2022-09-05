@@ -8,6 +8,8 @@ pipeline
     agent any
     environment
     {
+        imagename = "naleruto/webserver-ada"
+        registryCredential = 'naleruto-dockerhub'
         dockerImage = ''
     }
     stages
@@ -30,19 +32,19 @@ pipeline
                 echo 'Building...'
                 script
                 {
-                    dockerImage = docker.build("naleruto-webserver-ada:${env.BUILD_ID}", ".")
+                    dockerImage = docker.build imagename
                 }
             }
         }
 
-        stage('Run') 
-        {
-            steps 
-            {
-                echo 'Run...'
-                script
-                {
-                    dockerImage.run()
+        stage('Deploy Image') {
+            steps{
+                script {
+                docker.withRegistry( '', registryCredential ) {
+                    dockerImage.push("$BUILD_NUMBER")
+                    dockerImage.push('latest')
+
+                }
                 }
             }
         }
