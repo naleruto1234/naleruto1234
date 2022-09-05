@@ -21,9 +21,14 @@ pipeline
             {
                 echo 'Instal Docker..'
                 sh 'cat /etc/os-release'
-                sh 'curl -fsSL "https://download.docker.com/linux/static/stable/x86_64/docker-17.03.1-ce.tgz" \
-                    | tar -xzC /usr/local/bin --strip=1 docker/docker'
-                sh 'sudo service docker start'
+                sh 'curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -'
+                sh 'add-apt-repository \
+                    "deb [arch=amd64] https://download.docker.com/linux/debian \
+                    $(lsb_release -cs) \
+                    stable"'
+                sh 'apt-get update  -qq \
+                    && apt-get install docker-ce=17.12.1~ce-0~debian -y'
+                sh 'usermod -aG docker'
                 // sh 'sudo apt-get update'
                 // sh 'sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin'
                 // sh 'apt-cache madison docker-ce'
