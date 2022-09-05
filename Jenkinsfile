@@ -30,7 +30,7 @@ pipeline
                     stable"'
                 sh 'apt-get update  -qq \
                     && apt-get install docker-ce'
-                sh 'usermod -aG docker jenkins'
+                sh 'usermod -aG docker $(whoami)'
                 sh 'service docker start'
                 // sh 'sudo apt-get update'
                 // sh 'sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin'
