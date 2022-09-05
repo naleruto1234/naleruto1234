@@ -15,6 +15,29 @@ pipeline
     stages
     {
 
+        stage('Instal Docker')
+        {
+            steps
+            {
+                echo 'Instal Docker..'
+                sh 'ENV DOCKER_CHANNEL stable
+                    ENV DOCKER_VERSION 17.03.1-ce
+                    ENV DOCKER_API_VERSION 1.27
+                    RUN curl -fsSL "https://download.docker.com/linux/static/${DOCKER_CHANNEL}/x86_64/docker-${DOCKER_VERSION}.tgz" \
+                    | tar -xzC /usr/local/bin --strip=1 docker/docker'
+            }
+        }
+
+        stage('Git Clone')
+        {
+            steps
+            {
+                echo 'Git Clone'
+                git url: githubRepo,
+                    branch: githubBranch
+            }
+        }
+
         stage('Git Clone')
         {
             steps
