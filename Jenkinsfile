@@ -23,7 +23,7 @@ pipeline
                 sh 'cat /etc/os-release'
                 sh 'curl -fsSL "https://download.docker.com/linux/static/stable/x86_64/docker-17.03.1-ce.tgz" \
                     | tar -xzC /usr/local/bin --strip=1 docker/docker'
-                sh 'systemctl start docker'
+                sh 'sudo service docker start'
                 // sh 'sudo apt-get update'
                 // sh 'sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin'
                 // sh 'apt-cache madison docker-ce'
