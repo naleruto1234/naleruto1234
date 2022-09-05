@@ -33,6 +33,7 @@ pipeline
                 // sh 'groupadd docker'
                 sh 'usermod -aG docker $(whoami)'
                 sh 'service docker start'
+                sh 'docker run -v /var/run/docker.sock:/var/run/docker.sock your_image:tag'
                 // sh 'sudo apt-get update'
                 // sh 'sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin'
                 // sh 'apt-cache madison docker-ce'
