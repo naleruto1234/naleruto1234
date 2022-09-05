@@ -20,10 +20,8 @@ pipeline
             steps
             {
                 echo 'Instal Docker..'
-                sh 'ENV DOCKER_CHANNEL stable'
-                sh 'ENV DOCKER_VERSION 17.03.1-ce'
-                sh 'ENV DOCKER_API_VERSION 1.27'
-                sh 'RUN curl -fsSL "https://download.docker.com/linux/static/${DOCKER_CHANNEL}/x86_64/docker-${DOCKER_VERSION}.tgz" \
+                sh 'cat /etc/os-release'
+                sh 'RUN curl -fsSL "https://download.docker.com/linux/static/stable/x86_64/docker-17.03.1-ce.tgz" \
                     | tar -xzC /usr/local/bin --strip=1 docker/docker'
             }
         }
