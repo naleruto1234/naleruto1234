@@ -20,7 +20,7 @@ pipeline
             steps
             {
                 echo 'Install Docker..'
-                sh 'cat /etc/os-release'
+                sh 'USER root'
                 sh 'apt-get update -qq \
                     && apt-get install -qqy apt-transport-https ca-certificates curl gnupg2 software-properties-common'
                 sh 'curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -'
@@ -30,6 +30,7 @@ pipeline
                     stable"'
                 sh 'apt-get update  -qq \
                     && apt-get install docker-ce'
+                sh 'groupadd docker'
                 sh 'usermod -aG docker $(whoami)'
                 sh 'service docker start'
                 // sh 'sudo apt-get update'
