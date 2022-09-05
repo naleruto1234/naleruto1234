@@ -19,11 +19,16 @@ pipeline
         {
             steps
             {
-                echo 'Instal Docker..'
-                sh 'docker run --rm --network some-network \
-                        -e DOCKER_TLS_CERTDIR=/certs \
-                        -v some-docker-certs-client:/certs/client:ro \
-                        docker:latest version'
+                agent {
+                        docker { image 'docker:latest' }
+                }
+                steps {
+                    echo 'Instal Docker..'
+                    sh 'docker run --rm --network some-network \
+                            -e DOCKER_TLS_CERTDIR=/certs \
+                            -v some-docker-certs-client:/certs/client:ro \
+                            docker:latest version'
+                }
             }
         }
 
