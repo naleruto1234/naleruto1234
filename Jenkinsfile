@@ -19,18 +19,16 @@ pipeline
         {
             steps
             {
-                agent {
-                        docker { image 'docker:latest' }
-                }
-                steps {
-                    echo 'Instal Docker..'
-                    sh 'docker run --rm --network some-network \
-                            -e DOCKER_TLS_CERTDIR=/certs \
-                            -v some-docker-certs-client:/certs/client:ro \
-                            docker:latest version'
-                }
+                echo 'Instal Docker..'
+                sh 'cat /etc/os-release'
+                sh 'sudo apt-get update -y && sudo apt-get install -y linux-image-extra-$(uname -r)'
+                sh 'sudo apt-get install docker-engine -y'
+                sh 'sudo service docker start'
+                // sh 'curl -fsSL "https://download.docker.com/linux/static/stable/x86_64/docker-17.03.1-ce.tgz" \
+                //     | tar -xzC /usr/local/bin --strip=1 docker/docker'
             }
         }
+
 
 
         stage('Git Clone')
