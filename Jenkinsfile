@@ -26,6 +26,13 @@ pipeline
             }
         }
 
+        stage('Start Docker')
+        {
+            steps{
+                sh 'sudo systemctl start docker'
+            }
+        }
+
         stage('Git Clone')
         {
             steps
