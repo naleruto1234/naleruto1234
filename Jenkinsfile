@@ -30,7 +30,7 @@ pipeline
                     stable"'
                 sh 'apt-get update  -qq \
                     && apt-get install docker-ce'
-                sh 'groupadd docker'
+                // sh 'groupadd docker'
                 sh 'usermod -aG docker $(whoami)'
                 sh 'service docker start'
                 // sh 'sudo apt-get update'
