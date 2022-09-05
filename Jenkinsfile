@@ -38,16 +38,6 @@ pipeline
             }
         }
 
-        stage('Git Clone')
-        {
-            steps
-            {
-                echo 'Git Clone'
-                git url: githubRepo,
-                    branch: githubBranch
-            }
-        }
-
         stage('Build')
         {
             steps
