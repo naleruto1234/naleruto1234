@@ -43,11 +43,12 @@ pipeline
         stage('Deploy Image') {
             steps{
                 script {
-                docker.withRegistry( '', registryCredential ) {
-                    dockerImage.push("$BUILD_NUMBER")
-                    dockerImage.push('latest')
-
-                }
+                    docker.withServer('tcp://147.50.143.134:8376') {
+                        docker.withRegistry( '', registryCredential ) {
+                            dockerImage.push("$BUILD_NUMBER")
+                            dockerImage.push('latest')
+                        }
+                    }
                 }
             }
         }
