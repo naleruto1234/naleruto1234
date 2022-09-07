@@ -15,35 +15,6 @@ pipeline
     stages
     {
 
-        stage('Install Docker')
-        {
-            steps
-            {
-                echo 'Install Docker..'
-                sh 'cat /etc/os-release'
-                sh 'apt-get update -qq \
-                    && apt-get install -qqy apt-transport-https ca-certificates curl gnupg2 software-properties-common'
-                sh 'curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -'
-                sh 'add-apt-repository \
-                    "deb [arch=amd64] https://download.docker.com/linux/debian \
-                    $(lsb_release -cs) \
-                    stable"'
-                sh 'apt-get update  -qq \
-                    && apt-get install docker-ce'
-                // sh 'groupadd docker'
-                sh 'usermod -aG docker $(whoami)'
-                // sh 'docker run --privileged'
-                sh 'service docker start'
-                // sh 'docker run -v /var/run/docker.sock:/var/run/docker.sock your_image:tag'
-                // sh 'sudo apt-get update'
-                // sh 'sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin'
-                // sh 'apt-cache madison docker-ce'
-                // sh 'sudo apt-get install docker-ce=5:20.10.16~3-0~ubuntu-jammy docker-ce-cli=5:20.10.16~3-0~ubuntu-jammy containerd.io docker-compose-plugin'
-                // sh 'sudo docker run hello-world'
-            }
-        }
-
-
 
         stage('Git Clone')
         {
@@ -62,7 +33,9 @@ pipeline
                 echo 'Building...'
                 script
                 {
-                    dockerImage = docker.build imagename
+                    docker.withServer('tcp://147.50.143.134:8376') {
+                        dockerImage = docker.build imagename
+                    }
                 }
             }
         }
