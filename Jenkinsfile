@@ -34,24 +34,24 @@ pipeline
                 script
                 {
                     docker.withServer('tcp://147.50.143.134:8376') {
-                        sh 'docker ps'
+                        dockerImage = docker.build imagename
                     }
                 }
             }
         }
 
-        // stage('Deploy Image') {
-        //     steps{
-        //         script {
-        //             docker.withServer('tcp://147.50.143.134:8376') {
-        //                 docker.withRegistry( '', registryCredential ) {
-        //                     dockerImage.push("$BUILD_NUMBER")
-        //                     dockerImage.push('latest')
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
+        stage('Deploy Image') {
+            steps{
+                script {
+                    docker.withServer('tcp://147.50.143.134:8376') {
+                        docker.withRegistry( '', registryCredential ) {
+                            dockerImage.push("$BUILD_NUMBER")
+                            dockerImage.push('latest')
+                        }
+                    }
+                }
+            }
+        }
 
     }
 }
