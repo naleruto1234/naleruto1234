@@ -33,7 +33,7 @@ pipeline
                 echo 'Building...'
                 script
                 {
-                    docker.withServer('tcp://147.50.143.134:8376') {
+                    docker.withServer('tcp://147.50.143.134:8375') {
                         dockerImage = docker.build imagename
                     }
                 }
