@@ -34,7 +34,7 @@ pipeline
                 script
                 {
                     docker.withServer('tcp://147.50.143.134:8376') {
-                        sh 'C:\WINDOWS\system32\config\systemprofile\AppData\Local\Jenkins.jenkins\workspace\naleruto1234>docker build -t "naleruto/webserver-ada"'
+                        bat 'C:\WINDOWS\system32\config\systemprofile\AppData\Local\Jenkins.jenkins\workspace\naleruto1234>docker build -t "naleruto/webserver-ada"'
                     }
                 }
             }
